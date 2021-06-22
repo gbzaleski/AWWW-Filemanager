@@ -1,0 +1,57 @@
+[kernel] Parsing triangle.c (with preprocessing)
+[wp] Running WP plugin...
+[kernel] triangle.c:19: Warning: 
+  No code nor implicit assigns clause for function sqrt, generating default assigns from the prototype
+[wp] Warning: Missing RTE guards
+[wp] User Error: Prover 'alt-ergo' not found in why3.conf
+------------------------------------------------------------
+  Function triangle
+------------------------------------------------------------
+
+Goal Post-condition (file triangle.c, line 15) in 'triangle':
+Let a_1 = sub_f64(a, b).
+Let r = of_f64(mul_f64(mul_f64(mul_f64(add_f64(a, add_f64(b, c)),
+                                 add_f64(a, sub_f64(b, c))), add_f64(c, a_1)),
+                 sub_f64(c, a_1))).
+Let r_1 = of_f64(a).
+Let r_2 = of_f64(b).
+Let r_3 = of_f64(c).
+Let r_4 = of_f64(mul_f64(to_f64((1.0/4)), sqrt_0)).
+Let r_5 = L_S(r_1, r_2, r_3).
+Assume {
+  (* Goal *)
+  When: (1.0/26815615859885194199148049996411692254958731641184786755447122887443528060147093953603748596333806855380063716372972101707507765623893139892867298012168192)
+          < r_4.
+  (* Pre-condition *)
+  Have: (r_1
+           <= 57896044618658097711785492504343953926634992332820282019728792003956564819968.0) /\
+      (r_2 <= r_1) /\ (r_3 <= r_2) /\ (.0 <= r_3) /\ (r_1 <= (r_2 + r_3)).
+  (* Call 'sqrt' *)
+  Have: (of_f64(round_double(Rounding.RNE, sqrt(r))) = of_f64(sqrt_0)) /\
+      (.0 <= r).
+}
+Prove: abs_real(r_4 - r_5)
+         <= ((59672695062659101.0/81129638414606681695789005144064) * r_5).
+
+------------------------------------------------------------
+
+Goal Instance of 'Pre-condition (file triangle.c, line 2) in 'sqrt'' in 'triangle' at call 'sqrt' (file triangle.c, line 20)
+:
+Let r = of_f64(a).
+Let r_1 = of_f64(b).
+Let r_2 = of_f64(c).
+Let a_1 = sub_f64(a, b).
+Assume {
+  (* Pre-condition *)
+  Have: (r
+           <= 57896044618658097711785492504343953926634992332820282019728792003956564819968.0) /\
+      (r_1 <= r) /\ (r_2 <= r_1) /\ (.0 <= r_2) /\ (r <= (r_1 + r_2)).
+}
+Prove: .0
+         <= of_f64(mul_f64(mul_f64(mul_f64(add_f64(a, add_f64(b, c)),
+                                     add_f64(a, sub_f64(b, c))),
+                             add_f64(c, a_1)), sub_f64(c, a_1))).
+
+------------------------------------------------------------
+[wp] User Error: Deferred error message was emitted during execution. See above messages for more information.
+[kernel] Plug-in wp aborted: invalid user input.

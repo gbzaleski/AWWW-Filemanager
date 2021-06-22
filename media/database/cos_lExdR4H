@@ -1,0 +1,13 @@
+/*@ predicate sorted{L}(long *t, integer a, integer b) =
+  @    \forall integer i,j; a <= i <= j <= b ==> t[i] <= t[j];
+  @*/
+
+int binary_search__2(long t[], int n, long v) {
+  int l = 0, u = n-1;
+  /*@ loop invariant
+    @   0 <= l && u <= n-1;
+    @ for failure:
+    @   loop invariant
+    @   \forall integer k; 0 <= k < n && t[k] == v ==> l <= k <= u;
+    @ loop variant u-l;
+    @*/

@@ -1,0 +1,182 @@
+------------------------------------------------------------
+<a onclick='$("#bin1").toggle();'> Function my_cos1</a>
+------------------------------------------------------------
+<div id = "bin1" style = "display: none">
+Goal Post-condition (file cos.c, line 3) in 'my_cos1':
+Let r = of_f32(x).
+Let r_1 = -cos(r).
+Assume {
+  (* Pre-condition *)
+  Have: abs_real(r) <= (1.0/32).
+  (* Assertion *)
+  Have: abs_real(1.0 - cos(r) - ((1.0/2) * r * r)) <= (1.0/16777216).
+}
+Prove: abs_real(of_f32(sub_f32(to_f32(1.0),
+                         mul_f32(mul_f32(x, x), to_f32((1.0/2))))) - 
+         cos(r)) <= (1.0/8388608).
+</div>
+------------------------------------------------------------
+
+Goal Assertion (file cos.c, line 6):
+Let r = of_f32(x).
+Assume { (* Pre-condition *) Have: abs_real(r) <= (1.0/32). }
+Prove: abs_real(1.0 - cos(r) - ((1.0/2) * r * r)) <= (1.0/16777216).
+
+------------------------------------------------------------
+------------------------------------------------------------
+ <a onclick='$("#bin2").toggle();'>  Function my_cos2 </a>
+------------------------------------------------------------
+<div id = "bin2" style = "display: none">
+Goal Post-condition (file cos.c, line 12) in 'my_cos2':
+cos.c:11: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \round_error(float32) not defined
+cos.c:16: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+Let r = of_f32(x).
+Let r_1 = -cos(r).
+Assume {
+  Warning[wp]: Builtin \round_error(float32) not defined
+  (Hide sub-term definition).
+  (* Pre-condition *)
+  Have: abs_real(r) <= (1.0/32).
+  Warning[wp]: Builtin \exact(float32) not defined
+  (Hide sub-term definition).
+  (* Assertion *)
+  Have: abs_real(w - cos(r)) <= (1.0/16777216).
+}
+Prove: abs_real(of_f32(sub_f32(to_f32(1.0),
+                         mul_f32(mul_f32(x, x), to_f32((1.0/2))))) - 
+         cos(r)) <= (1.0/8388608).
+</div>
+------------------------------------------------------------
+
+<a onclick='$("#bin7").toggle();'> Goal Assertion (file cos.c, line 16): </a>
+<div id = "bin7" style = "display: none">
+cos.c:11: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \round_error(float32) not defined
+cos.c:16: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+Let r = of_f32(x).
+Assume {
+  Warning[wp]: Builtin \round_error(float32) not defined
+  (Hide sub-term definition).
+  (* Pre-condition *)
+  Have: abs_real(r) <= (1.0/32).
+}
+Prove: abs_real(w - cos(r)) <= (1.0/16777216).
+</div>
+------------------------------------------------------------
+  <a onclick='$("#bin3").toggle();'>  Function my_cos3 </a>
+------------------------------------------------------------
+<div id = "bin3" style = "display: none">
+Goal Post-condition (file cos.c, line 22) in 'my_cos3':
+cos.c:20: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+cos.c:21: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \round_error(float32) not defined
+cos.c:22: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+cos.c:22: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+cos.c:23: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \round_error(float32) not defined
+cos.c:23: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \round_error(float32) not defined
+cos.c:27: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+cos.c:27: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+Assume {
+  Warning[wp]: Builtin \exact(float32) not defined
+  (Hide sub-term definition).
+  Warning[wp]: Builtin \round_error(float32) not defined
+  (Hide sub-term definition).
+  (* Pre-condition *)
+  Have: (w_4 <= (1.0/1048576)) /\ (abs_real(w_5) <= (1.0/32)).
+  Warning[wp]: Builtin \exact(float32) not defined
+  (Hide sub-term definition).
+  Warning[wp]: Builtin \round_error(float32) not defined
+  (Hide sub-term definition).
+  (* Pre-condition *)
+  Have: (w_6 <= (1.0/1048576)) /\ (abs_real(w_7) <= (1.0/32)).
+  Warning[wp]: Builtin \exact(float32) not defined
+  (Hide sub-term definition).
+  Warning[wp]: Builtin \exact(float32) not defined
+  (Hide sub-term definition).
+  (* Assertion *)
+  Have: abs_real(w_8 - cos(w_9)) <= (1.0/16777216).
+}
+Prove: (w <= ((3.0/16777216) + w_1)) /\
+    (abs_real(w_2 - cos(w_3)) <= (1.0/16777216)).
+</div>
+------------------------------------------------------------
+
+<a onclick='$("#bin4").toggle();'> Goal Assertion (file cos.c, line 27): </a>
+<div id = "bin4" style = "display: none">
+cos.c:20: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+cos.c:21: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \round_error(float32) not defined
+cos.c:27: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+cos.c:27: warning from wp:
+ - Warning: Hide sub-term definition
+   Reason: Builtin \exact(float32) not defined
+Assume {
+  Warning[wp]: Builtin \exact(float32) not defined
+  (Hide sub-term definition).
+  Warning[wp]: Builtin \round_error(float32) not defined
+  (Hide sub-term definition).
+  (* Pre-condition *)
+  Have: (w_2 <= (1.0/1048576)) /\ (abs_real(w_3) <= (1.0/32)).
+  Warning[wp]: Builtin \exact(float32) not defined
+  (Hide sub-term definition).
+  Warning[wp]: Builtin \round_error(float32) not defined
+  (Hide sub-term definition).
+  (* Pre-condition *)
+  Have: (w_4 <= (1.0/1048576)) /\ (abs_real(w_5) <= (1.0/32)).
+}
+Prove: abs_real(w - cos(w_1)) <= (1.0/16777216).
+</div>
+------------------------------------------------------------
+------------------------------------------------------------
+<a onclick='$("#bin5").toggle();'> Function my_cos4</a>
+------------------------------------------------------------
+<div id = "bin5" style = "display: none">
+Goal Post-condition (file cos.c, line 32) in 'my_cos4':
+Let r = of_f32(x).
+Let r_1 = -cos(r).
+Assume {
+  (* Pre-condition *)
+  Have: abs_real(r) <= (7.0/100).
+  (* Assertion *)
+  Have: abs_real(1.0 - cos(r) - ((1.0/2) * r * r)) <= (15.0/16777216).
+}
+Prove: abs_real(of_f32(sub_f32(to_f32(1.0),
+                         mul_f32(mul_f32(x, x), to_f32((1.0/2))))) - 
+         cos(r)) <= (1.0/1048576).
+</div>
+
+------------------------------------------------------------
+
+Goal Assertion (file cos.c, line 35):
+Let r = of_f32(x).
+Assume { (* Pre-condition *) Have: abs_real(r) <= (7.0/100). }
+Prove: abs_real(1.0 - cos(r) - ((1.0/2) * r * r)) <= (15.0/16777216).
+
+------------------------------------------------------------

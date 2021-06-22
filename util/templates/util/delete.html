@@ -1,0 +1,58 @@
+
+{% extends "util/form.html" %}
+{% block content %}
+{% load static %}
+        <script src="{% static 'util/script.js' %}"></script>
+	    <script src="{% static 'util/jq.js' %}"></script>
+    <div class="content-section" style="margin-top: -20px;">
+        <form method = "POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-0">Delete Directory</legend>
+            </fieldset>
+            <select name="dirs" id="dirs">
+            {% for dir in directories %}
+            {% if dir.deleted == False%}
+              <option value="{{dir.id}}">{{dir.name}} ({{dir.id}})</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit" onclick="deleteDirectoryJs()">Delete</button>
+            </div>
+        </form>
+
+        <form method = "POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom">Delete File</legend>
+            </fieldset>
+            <select name="files" id="files">
+                {% for file in files %}
+                  {% if file.deleted == False %}
+                    <option value="{{file.id}}">{{file.name}} ({{file.id}})</option>
+                  {% endif %}
+                {% endfor %}
+            </select>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit" onclick="deleteFileJs()">Delete</button>
+            </div>
+        </form>
+    </div>
+
+
+    <style>
+    .dirname, .filename
+    {
+        margin-top: 3px;
+        font-weight: bolder;
+        font-size: 1.2em;
+        padding: 3px;
+    }
+
+    button
+    {
+        margin-top: 10px;
+    }
+    </style>
+{% endblock content %}

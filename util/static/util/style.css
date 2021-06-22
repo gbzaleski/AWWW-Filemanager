@@ -1,0 +1,213 @@
+:root 
+{
+    --navbarbg: #b6b9cc;
+    --filesbg: #7ce8f2;
+    --codebg: #ced0d9;
+    --focusbg: #ffe4e1;
+    --tabsbg: #bc7ff5;
+    --tabspanelbg: #706d6d;
+}
+
+html, 
+body
+{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.topnav 
+{
+    width: 100%;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+    background-color: var(--navbarbg);
+    overflow: hidden;
+}
+
+.topnav a 
+{
+    text-decoration: none;
+    float: left;
+    color: black;
+    font-weight: 750;
+    text-align: center;
+    padding-left: 20px;
+    font-size: 20px;
+}
+
+.topnav a:hover
+{
+    color: rgb(216, 250, 65);
+    cursor: pointer;
+}
+
+.box
+{
+	display: flex;
+	min-height: calc(100% - 40px);
+}
+
+.files
+{
+    float: left;
+    background-color: var(--filesbg);
+    width: 20%;
+    text-align: center;
+    font-size: 1.6em;
+}
+
+.files > .dir > .dirname
+{
+    margin-top: 10px;
+    font-weight: bolder;
+    font-size: 1.2em;
+}
+
+.files .filename
+{
+    padding: 0 3px;
+}
+
+.files .filename:hover
+{
+    color: rgb(216, 250, 65);
+    cursor: pointer;
+}
+
+.work-space 
+{
+    display: grid;
+    /* Ustawienie paneli w trybie przeglądarkowym */
+    grid-template-areas: 
+        "code focus"
+        "tab tab";
+
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 3fr 1fr;
+    width: 80%;
+}
+
+.code 
+{
+    grid-area: code;
+    background-color: var(--codebg);
+}
+
+.code > .codeholder
+{
+    width: calc(100% - 20px);
+    height: calc(100% - 20px);
+    overflow-x: auto;
+    padding: 10px;
+    white-space: pre-wrap;
+}
+
+.focus
+{
+    grid-area: focus;
+    background-color:var(--focusbg);
+}
+
+.focus > .focuscontent 
+{
+    height: 80%;
+	overflow-y: scroll;
+    padding: 10px;
+    white-space: pre-wrap;
+}
+
+.focus a
+{
+    font-weight: bold;
+}
+
+.focus a:hover
+{
+    cursor: pointer;
+    color:limegreen;
+}
+
+.tab 
+{
+    grid-area: tab;
+    background-color:var(--tabsbg);
+}
+
+.buttpanel
+{
+    background-color: var(--tabspanelbg);
+    padding: 10px;
+    height: 10%;
+}
+
+.tabcontent
+{
+    width: 100%;
+}
+
+.incontent
+{
+    padding-left: 10px;
+}
+
+.codemirror-textarea
+{
+    height: 100%;
+}
+
+/* Zmiany w wyglądzie strony na urzędzeniach mobilnych */
+@media only screen and (max-width: 768px) 
+{
+    body
+    {
+        display: flex;
+        flex-direction: column;
+    }
+
+	.box
+	{
+		flex-direction: column;
+	}
+
+    .files
+    {
+        float: inherit;
+        height: auto;
+		width: auto;
+    }
+
+    .work-space
+    {
+        /* W trybie mobilnym wszystkie panele są w jednej kolumnie */
+        grid-template-areas: 
+        "code"
+        "focus"
+        "tab";
+
+        width: auto;
+		height: 100%;
+		grid-template-columns: auto;
+		grid-template-rows: 3fr 1fr;
+        font-size: 0.75em;
+    }
+
+    .code > .codeholder
+    {
+        padding: 5px 10px;
+		height: calc(100% - 10px);
+		width: calc(100% - 20px);
+    }
+
+    .focus
+    {
+        padding: 0;
+    }
+
+    .focus > .focuscontent
+    {
+        padding: 5px 10px;
+    }
+}

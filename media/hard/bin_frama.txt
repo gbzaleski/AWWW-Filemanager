@@ -1,0 +1,165 @@
+------------------------------------------------------------
+ <a onclick='$("#bin1").toggle();'> Function binary_search </a>
+------------------------------------------------------------
+<div id = "bin1" style = "display: none">
+Goal Post-condition (file bin.c, line 6) in 'binary_search':
+Let x = l + u.
+Let x_1 = x / 2.
+Let x_2 = Mint_0[shift_sint32(t, x_1)].
+Assume {
+  Type: is_sint32(l) /\ is_sint32(n_1) /\ is_sint32(n) /\ is_sint32(u) /\
+      is_sint32(v) /\ is_sint32(x_1) /\ is_sint32(x_2).
+  (* Heap *)
+  Type: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Residual *)
+  When: l <= u.
+  (* Pre-condition *)
+  Have: (0 <= n) /\ valid_rw(Malloc_0, shift_sint32(t_1, 0), n).
+  (* Invariant *)
+  Have: (0 <= l) /\ (u < n_1).
+  (* Assertion *)
+  Have: (x_1 <= u) /\ (l <= x_1).
+  (* Else *)
+  Have: v <= x_2.
+  (* Else *)
+  Have: x_2 <= v.
+}
+Prove: (x_1 < n) /\ ((-3) <= x).
+</div>
+------------------------------------------------------------
+
+<a onclick='$("#bin2").toggle();'>Goal Preservation of Invariant (file bin.c, line 17): </a>
+
+<div id = "bin2" style = "display: none">
+Let x = (l_1 + u_1) / 2.
+Let x_1 = Mint_0[shift_sint32(t, x)].
+Assume {
+  Type: is_sint32(l) /\ is_sint32(l_1) /\ is_sint32(n) /\ is_sint32(n_1) /\
+      is_sint32(u) /\ is_sint32(u_1) /\ is_sint32(v) /\ is_sint32(x) /\
+      is_sint32(x_1).
+  (* Heap *)
+  Type: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t_1, 0), n_1).
+  (* Invariant *)
+  Have: (0 <= l_1) /\ (u_1 < n).
+  (* Then *)
+  Have: l_1 <= u_1.
+  (* Assertion *)
+  Have: (x <= u_1) /\ (l_1 <= x).
+  If x_1 < v
+  Then { Have: u_1 = u. Have: (1 + ((l_1 + u) / 2)) = l. }
+  Else {
+    Let x_2 = (l + u_1) / 2.
+    Have: l_1 = l.
+    (* Then *)
+    Have: v < Mint_0[shift_sint32(t, x_2)].
+    Have: x_2 = (1 + u).
+  }
+}
+Prove: (0 <= l) /\ (u < n).
+</div>
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file bin.c, line 17):
+Prove: true.
+------------------------------------------------------------
+
+<a onclick='$("#bin3").toggle();'>Goal Assertion (file bin.c, line 25): </a>
+<div id = "bin3" style = "display: none">
+Let x = (l + u) / 2.
+Assume {
+  Type: is_sint32(l) /\ is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(u) /\
+      is_sint32(x).
+  (* Heap *)
+  Type: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t, 0), n_1).
+  (* Invariant *)
+  Have: (0 <= l) /\ (u < n).
+  (* Then *)
+  Have: l <= u.
+}
+Prove: (x <= u) /\ (l <= x).
+</div>
+------------------------------------------------------------
+
+Goal Decreasing of Loop variant at loop (file bin.c, line 23):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Positivity of Loop variant at loop (file bin.c, line 23):
+Prove: true.
+------------------------------------------------------------
+  <a onclick='$("#bin4").toggle();'>Function binary_search with behavior failure</a>
+------------------------------------------------------------
+<div id = "bin4" style = "display: none">
+Goal Post-condition for 'failure' (file bin.c, line 11) in 'binary_search':
+Assume {
+  Type: is_sint32(l) /\ is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(u) /\
+      is_sint32(v_1).
+  (* Heap *)
+  Type: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Goal *)
+  When: (0 <= i) /\ (i < n_1).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t, 0), n_1).
+  (* Pre-condition for 'failure' *)
+  Have: P_sorted(Mint_1, t, 0, n_1 - 1).
+  (* Invariant for 'failure' *)
+  Have: forall i_1 : Z. ((Mint_0[shift_sint32(t_1, i_1)] = v_1) ->
+      ((0 <= i_1) -> ((i_1 < n) -> ((l <= i_1) /\ (i_1 <= u))))).
+  (* Invariant *)
+  Have: (0 <= l) /\ (u < n).
+  Have: u < l.
+}
+Prove: Mint_0[shift_sint32(t, i)] != v.
+</div>
+------------------------------------------------------------
+
+<a onclick='$("#bin5").toggle();'> Goal Preservation of Invariant for 'failure' (file bin.c, line 20): </a>
+<div id = "bin5" style = "display: none">
+Let x = (l_1 + u_1) / 2.
+Let x_1 = Mint_0[shift_sint32(t, x)].
+Let x_2 = Mint_0[shift_sint32(t, i)].
+Assume {
+  Type: is_sint32(l) /\ is_sint32(l_1) /\ is_sint32(n) /\ is_sint32(n_1) /\
+      is_sint32(u) /\ is_sint32(u_1) /\ is_sint32(x_2) /\ is_sint32(x) /\
+      is_sint32(x_1).
+  (* Heap *)
+  Type: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Goal *)
+  When: (0 <= i) /\ (i < n).
+  (* Pre-condition *)
+  Have: (0 <= n_1) /\ valid_rw(Malloc_0, shift_sint32(t_1, 0), n_1).
+  (* Pre-condition for 'failure' *)
+  Have: P_sorted(Mint_1, t_1, 0, n_1 - 1).
+  (* Invariant for 'failure' *)
+  Have: forall i_1 : Z. ((Mint_0[shift_sint32(t, i_1)] = x_2) ->
+      ((0 <= i_1) -> ((i_1 < n) -> ((l_1 <= i_1) /\ (i_1 <= u_1))))).
+  (* Invariant *)
+  Have: (0 <= l_1) /\ (u_1 < n).
+  (* Then *)
+  Have: l_1 <= u_1.
+  (* Assertion *)
+  Have: (x <= u_1) /\ (l_1 <= x).
+  If x_1 < x_2
+  Then { Have: u_1 = u. Have: (1 + ((l_1 + u) / 2)) = l. }
+  Else {
+    Let x_3 = (l + u_1) / 2.
+    Have: l_1 = l.
+    (* Then *)
+    Have: x_2 < Mint_0[shift_sint32(t, x_3)].
+    Have: x_3 = (1 + u).
+  }
+  (* Loop variant at loop *)
+  Have: (l_1 + u) < (l + u_1).
+}
+Prove: (l <= i) /\ (i <= u).
+</div>
+------------------------------------------------------------
+
+Goal Establishment of Invariant for 'failure' (file bin.c, line 20):
+Prove: true.
+

@@ -1,0 +1,324 @@
+[kernel] Parsing sort.c (with preprocessing)
+[kernel] sort.c:8: Warning: 
+  parsing obsolete ACSL construct '\valid_range(addr,min,max)'. '\valid(addr+(min..max))' should be used instead.
+[wp] Running WP plugin...
+[wp] Warning: Missing RTE guards
+[wp] sort.c:29: Warning: Missing assigns clause (assigns 'everything' instead)
+[wp] sort.c:19: Warning: Missing assigns clause (assigns 'everything' instead)
+[wp] User Error: Prover 'alt-ergo' not found in why3.conf
+------------------------------------------------------------
+  Function insert_sort
+------------------------------------------------------------
+
+Goal Post-condition (file sort.c, line 9) in 'insert_sort':
+Assume {
+  Type: is_sint32(i) /\ is_sint32(n) /\ is_sint32(n_1).
+  (* Heap *)
+  Type: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t, 0), n).
+  If n <= 1
+  Else {
+    (* Invariant *)
+    Have: P_Sorted(Mint_0, t_1, 0, i).
+    (* Invariant *)
+    Have: (0 <= i) /\ (i <= n_1).
+    (* Else *)
+    Have: n_1 <= i.
+  }
+}
+Prove: P_Sorted(Mint_0, t, 0, n - 1).
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file sort.c, line 15):
+Let x = 1 + i.
+Assume {
+  Type: is_sint32(i_1) /\ is_sint32(i) /\ is_sint32(j) /\ is_sint32(mv_0) /\
+      is_sint32(n_1) /\ is_sint32(n) /\ is_sint32(n_2) /\ is_sint32(x).
+  (* Heap *)
+  Type: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t, 0), n_1).
+  (* Else *)
+  Have: 2 <= n_1.
+  (* Invariant *)
+  Have: P_Sorted(Mint_0, t_1, 0, i_1).
+  (* Invariant *)
+  Have: (0 <= i_1) /\ (i_1 <= n_2).
+  (* Then *)
+  Have: i_1 < n_2.
+  (* Invariant *)
+  Have: forall i_2 : Z. ((i_2 < i) -> ((j <= i_2) ->
+      (mv_1 < Mint_1[shift_sint32(t_2, i_2)]))).
+  (* Invariant *)
+  Have: ((j < i) -> P_Sorted(Mint_1, t_2, 0, x)).
+  (* Invariant *)
+  Have: ((j = i) -> P_Sorted(Mint_1, t_2, 0, i)).
+  (* Invariant *)
+  Have: (j <= i) /\ (0 <= j).
+  If 0 < j
+  Then {
+    Have: (Mint_1 = Mint_2) /\ (mv_1 = mv_0) /\ (t_2 = t_3).
+    (* Then *)
+    Have: Mint_2[shift_sint32(t_3, j - 1)] <= mv_0.
+  }
+}
+Prove: (i < n) /\ ((-1) <= i).
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file sort.c, line 15):
+Assume {
+  Type: is_sint32(n).
+  (* Heap *)
+  Type: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t, 0), n).
+  (* Else *)
+  Have: 2 <= n.
+}
+Prove: 0 < n.
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file sort.c, line 16):
+Let x = 1 + i.
+Assume {
+  Type: is_sint32(i_1) /\ is_sint32(i) /\ is_sint32(j) /\ is_sint32(n) /\
+      is_sint32(n_1) /\ is_sint32(x).
+  (* Heap *)
+  Type: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t_1, 0), n).
+  (* Else *)
+  Have: 2 <= n.
+  (* Invariant *)
+  Have: P_Sorted(Mint_1, t_2, 0, i_1).
+  (* Invariant *)
+  Have: (0 <= i_1) /\ (i_1 <= n_1).
+  (* Then *)
+  Have: i_1 < n_1.
+  (* Invariant *)
+  Have: forall i_2 : Z. ((i_2 < i) -> ((j <= i_2) ->
+      (mv_0 < Mint_0[shift_sint32(t, i_2)]))).
+  (* Invariant *)
+  Have: ((j < i) -> P_Sorted(Mint_0, t, 0, x)).
+  (* Invariant *)
+  Have: ((j = i) -> P_Sorted(Mint_0, t, 0, i)).
+  (* Invariant *)
+  Have: (j <= i) /\ (0 <= j).
+  If 0 < j
+  Then { (* Then *) Have: Mint_0[shift_sint32(t, j - 1)] <= mv_0. }
+}
+Prove: P_Sorted(Mint_0[shift_sint32(t, j) <- mv_0], t, 0, x).
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file sort.c, line 16):
+Assume {
+  Type: is_sint32(n).
+  (* Heap *)
+  Type: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t, 0), n).
+  (* Else *)
+  Have: 2 <= n.
+}
+Prove: P_Sorted(Mint_0, t, 0, 1).
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file sort.c, line 22):
+Let x = j - 1.
+Let x_1 = Mint_0[shift_sint32(t, x)].
+Let x_2 = 1 + i.
+Assume {
+  Type: is_sint32(i_1) /\ is_sint32(i) /\ is_sint32(j) /\ is_sint32(mv_0) /\
+      is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(x) /\ is_sint32(x_1).
+  (* Heap *)
+  Type: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t_1, 0), n).
+  (* Else *)
+  Have: 2 <= n.
+  (* Invariant *)
+  Have: P_Sorted(Mint_1, t_2, 0, i_1).
+  (* Invariant *)
+  Have: (0 <= i_1) /\ (i_1 <= n_1).
+  (* Then *)
+  Have: i_1 < n_1.
+  (* Invariant *)
+  Have: forall i_2 : Z. ((i_2 < i) -> ((j <= i_2) ->
+      (mv_0 < Mint_0[shift_sint32(t, i_2)]))).
+  (* Invariant *)
+  Have: ((j < i) -> P_Sorted(Mint_0, t, 0, x_2)).
+  (* Invariant *)
+  Have: ((j = i) -> P_Sorted(Mint_0, t, 0, i)).
+  (* Invariant *)
+  Have: (j <= i) /\ (0 <= j).
+  (* Then *)
+  Have: 0 < j.
+  (* Else *)
+  Have: mv_0 < x_1.
+}
+Prove: j <= x_2.
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file sort.c, line 22):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file sort.c, line 23):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file sort.c, line 23):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file sort.c, line 24):
+Let x = j - 1.
+Let x_1 = Mint_0[shift_sint32(t, x)].
+Let x_2 = 1 + i.
+Assume {
+  Type: is_sint32(i_1) /\ is_sint32(i) /\ is_sint32(j) /\ is_sint32(mv_0) /\
+      is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(x) /\ is_sint32(x_1).
+  (* Heap *)
+  Type: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Goal *)
+  When: j <= i.
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t_1, 0), n).
+  (* Else *)
+  Have: 2 <= n.
+  (* Invariant *)
+  Have: P_Sorted(Mint_1, t_2, 0, i_1).
+  (* Invariant *)
+  Have: (0 <= i_1) /\ (i_1 <= n_1).
+  (* Then *)
+  Have: i_1 < n_1.
+  (* Invariant *)
+  Have: forall i_2 : Z. ((i_2 < i) -> ((j <= i_2) ->
+      (mv_0 < Mint_0[shift_sint32(t, i_2)]))).
+  (* Invariant *)
+  Have: ((j < i) -> P_Sorted(Mint_0, t, 0, x_2)).
+  (* Invariant *)
+  Have: ((j = i) -> P_Sorted(Mint_0, t, 0, i)).
+  (* Invariant *)
+  Have: 0 <= j.
+  (* Then *)
+  Have: 0 < j.
+  (* Else *)
+  Have: mv_0 < x_1.
+}
+Prove: P_Sorted(Mint_0[shift_sint32(t, j) <- x_1], t, 0, x_2).
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file sort.c, line 24):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Preservation of Invariant (file sort.c, line 25):
+Let x = j - 1.
+Let x_1 = Mint_0[shift_sint32(t, x)].
+Assume {
+  Type: is_sint32(i_1) /\ is_sint32(i_2) /\ is_sint32(j) /\
+      is_sint32(mv_0) /\ is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(x) /\
+      is_sint32(x_1).
+  (* Heap *)
+  Type: (region(t_1.base) <= 0) /\ linked(Malloc_0).
+  (* Goal *)
+  When: (i < i_2) /\ (j <= (1 + i)).
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t_1, 0), n).
+  (* Else *)
+  Have: 2 <= n.
+  (* Invariant *)
+  Have: P_Sorted(Mint_1, t_2, 0, i_1).
+  (* Invariant *)
+  Have: (0 <= i_1) /\ (i_1 <= n_1).
+  (* Then *)
+  Have: i_1 < n_1.
+  (* Invariant *)
+  Have: forall i_3 : Z. ((i_3 < i_2) -> ((j <= i_3) ->
+      (mv_0 < Mint_0[shift_sint32(t, i_3)]))).
+  (* Invariant *)
+  Have: ((j < i_2) -> P_Sorted(Mint_0, t, 0, 1 + i_2)).
+  (* Invariant *)
+  Have: ((j = i_2) -> P_Sorted(Mint_0, t, 0, i_2)).
+  (* Invariant *)
+  Have: (j <= i_2) /\ (0 <= j).
+  (* Then *)
+  Have: 0 < j.
+  (* Else *)
+  Have: mv_0 < x_1.
+}
+Prove: mv_0 < Mint_0[shift_sint32(t, j) <- x_1][shift_sint32(t, i)].
+
+------------------------------------------------------------
+
+Goal Establishment of Invariant (file sort.c, line 25):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Decreasing of Loop variant at loop (file sort.c, line 19):
+Let x = 1 + i_1.
+Assume {
+  Type: is_sint32(i) /\ is_sint32(i_1) /\ is_sint32(j) /\ is_sint32(mv_0) /\
+      is_sint32(n_2) /\ is_sint32(n) /\ is_sint32(n_1) /\ is_sint32(x).
+  (* Heap *)
+  Type: (region(t.base) <= 0) /\ linked(Malloc_0).
+  (* Pre-condition *)
+  Have: valid_rw(Malloc_0, shift_sint32(t, 0), n_2).
+  (* Else *)
+  Have: 2 <= n_2.
+  (* Invariant *)
+  Have: P_Sorted(Mint_0, t_1, 0, i).
+  (* Invariant *)
+  Have: (0 <= i) /\ (i <= n_1).
+  (* Then *)
+  Have: i < n_1.
+  (* Invariant *)
+  Have: forall i_2 : Z. ((i_2 < i_1) -> ((j <= i_2) ->
+      (mv_1 < Mint_1[shift_sint32(t_2, i_2)]))).
+  (* Invariant *)
+  Have: ((j < i_1) -> P_Sorted(Mint_1, t_2, 0, x)).
+  (* Invariant *)
+  Have: ((j = i_1) -> P_Sorted(Mint_1, t_2, 0, i_1)).
+  (* Invariant *)
+  Have: (j <= i_1) /\ (0 <= j).
+  If 0 < j
+  Then {
+    Have: (Mint_1 = Mint_2) /\ (mv_1 = mv_0) /\ (t_2 = t_3).
+    (* Then *)
+    Have: Mint_2[shift_sint32(t_3, j - 1)] <= mv_0.
+  }
+}
+Prove: (i + n) <= (i_1 + n_1).
+
+------------------------------------------------------------
+
+Goal Positivity of Loop variant at loop (file sort.c, line 19):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Decreasing of Loop variant at loop (file sort.c, line 29):
+Prove: true.
+
+------------------------------------------------------------
+
+Goal Positivity of Loop variant at loop (file sort.c, line 29):
+Prove: true.
+
+------------------------------------------------------------
+[wp] User Error: Deferred error message was emitted during execution. See above messages for more information.
+[kernel] Plug-in wp aborted: invalid user input.

@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'util/main.css' %}"> -->
+    
+	  <script src="{% static 'util/script.js' %}"></script>
+	  <script src="{% static 'util/jq.js' %}"></script>
+    <link rel="stylesheet" type ="text/css" href="{% static 'util/style.css' %}">
+
+    <script src="{% static 'util/codemirror.js' %}"></script>
+    <link rel="stylesheet" type ="text/css" href="{% static 'util/codemirror.css' %}">
+    <script src="{% static 'util/mode/javascript/javascript.js' %}" ></script>
+    <script src="{% static 'util/mode/clike/clike.js' %}" ></script>
+    <script src="{% static 'util/codemirror_script.js' %}" defer></script>
+    
+
+    {% if title %}
+        <title>Filemanager - {{ title }}</title>
+    {% else %}
+        <title>Filemanager</title>
+    {% endif %}
+</head>
+<body>
+  <div class="topnav">
+  {% if user.is_authenticated %}
+    <a class="nav-item nav-link" onclick = 'launchFrama("{{  csrf_token  }}")'>Frama-C</a>
+    <a class="nav-item nav-link" href="{% url 'util-delete' %}" style = "display: none;">Delete</a>
+    <a class="nav-item nav-link" href="{% url 'util-add-file' %}">Add File</a>
+    <a class="nav-item nav-link" href="{% url 'util-add-directory' %}">Add Directory</a>
+    <a class="nav-item nav-link" onclick = "hideFocus()">Focus</a>
+    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout, {{ user}} </a>
+  {% else %}
+    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+    <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+  {% endif %}
+  </div>
+<div class="box">
+  <div class = "files">
+    {% for dir in directories %}
+      {% if dir.deleted == False and dir.owner == user %}
+        <div class = "dir" id = "dir-wrap-{{dir.pk}}">
+          <div class = "dirname" id = "dir-{{dir.pk}}">{{dir.name}}</div>
+          {% for file in dir.file_set.all %}
+            {% if file.deleted == False %}
+              <div class = "filename" id = "file-{{file.pk}}" onclick = 'markElement(this,"{{file.content.url}}", "{{file.framapath}}", "{{file.pk}}")'>{{file.name}}</div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% if user.is_authenticated %}
+      <iframe id="iFrame1" src="{% url 'util-delete' %}" width="100%" 
+      onload='javascript:(function(o){o.style.height=1.3*o.contentWindow.document.body.scrollHeight+"px";}(this));' 
+      style="height:200px;width:100%;border:none;overflow:hidden;"></iframe>
+    {% endif %}
+  </div>  
+  <div class="work-space">
+    <div class="code">
+      <div class="codeholder" id ="codeholdplace">
+        {% if user.is_authenticated %}
+          <textarea class="codemirror-textarea" id ="codemirror-textarea"></textarea>
+          <button onclick='saveCode("{{  csrf_token  }}")'>Save Code</button>
+        {% endif %}
+      </div>
+    </div>
+    <div class="focus">
+      <div class="focuscontent" id ="focuscontentplace">
+      </div>  
+      </div>
+    <div class="tab">
+      <div class="buttpanel">
+        <button onclick = "setFramaBasic()">Basic</button>
+        <button onclick = "setFramaProp()">Prop</button>
+        <button onclick = "setFramaRte()">Rte</button>
+        <button onclick = "setFramaBoth()">Both</button>
+        </div> 
+
+      <div id="tab1content" class="tabcontent">
+        <div class = "incontent">
+        <h2>Frama compilation mode</h2>
+        <p id = "framacompile">frama-c -wp -wp-log="r:result.txt" filename.c</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<form id = "framaform" action="/"  method="post" style="display: none;">
+  {% csrf_token %}
+  <input type="text" name = "fileid" id = "fileid" required>
+  <input type="text" name = "framapath" id = "framapath" required>
+</form>
+
+</body>
+</html>
